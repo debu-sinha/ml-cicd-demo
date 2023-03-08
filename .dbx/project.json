@@ -1,0 +1,15 @@
+{
+    "environments": {
+        "default": {
+            "profile": "debu_ws_ssa_test",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/ml_cicd_demo",
+                "artifact_location": "dbfs:/Shared/dbx/projects/ml_cicd_demo"
+            }
+        }
+    },
+    "inplace_jinja_support": false,
+    "failsafe_cluster_reuse_with_assets": false,
+    "context_based_upload_for_execute": false
+}
