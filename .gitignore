@@ -40,3 +40,4 @@ mlruns/
 
 #visual studio extension
 .databricks
+typings
