@@ -7,17 +7,20 @@ While using this project, you need Python 3.X and `pip` or `conda` for package m
 ## Local environment setup
 
 1. Instantiate a local Python environment via a tool of your choice. This example is based on `conda`, but you can use any environment management tool:
+
 ```bash
 conda create -n ml_cicd_demo python=3.9
 conda activate ml_cicd_demo
 ```
 
-2. If you don't have JDK installed on your local machine, install it (in this example we use `conda`-based installation):
+1. If you don't have JDK installed on your local machine, install it (in this example we use `conda`-based installation):
+
 ```bash
 conda install -c conda-forge openjdk=11.0.15
 ```
 
-3. Install project locally (this will also install dev requirements):
+1. Install project locally (this will also install dev requirements):
+
 ```bash
 pip install -e ".[local,test]"
 ```
@@ -25,7 +28,8 @@ pip install -e ".[local,test]"
 ## Running unit tests
 
 For unit testing, please use `pytest`:
-```
+
+```bash
 pytest tests/unit --cov
 ```
 
@@ -42,12 +46,14 @@ There are two options for running integration tests:
 For quicker startup of the job clusters we recommend using instance pools ([AWS](https://docs.databricks.com/clusters/instance-pools/index.html), [Azure](https://docs.microsoft.com/en-us/azure/databricks/clusters/instance-pools/), [GCP](https://docs.gcp.databricks.com/clusters/instance-pools/index.html)).
 
 For an integration test on all-purpose cluster, use the following command:
-```
+
+```bash
 dbx execute <workflow-name> --cluster-name=<name of all-purpose cluster>
 ```
 
 To execute a task inside multitask job, use the following command:
-```
+
+```bash
 dbx execute <workflow-name> \
     --cluster-name=<name of all-purpose cluster> \
     --job=<name of the job to test> \
@@ -55,17 +61,18 @@ dbx execute <workflow-name> \
 ```
 
 For a test on a job cluster, deploy the job assets and then launch a run from them:
-```
+
+```bash
 dbx deploy <workflow-name> --assets-only
 dbx launch <workflow-name>  --from-assets --trace
 ```
-
 
 ## Interactive execution and development on Databricks clusters
 
 1. `dbx` expects that cluster for interactive execution supports `%pip` and `%conda` magic [commands](https://docs.databricks.com/libraries/notebooks-python-libraries.html).
 2. Please configure your workflow (and tasks inside it) in `conf/deployment.yml` file.
 3. To execute the code interactively, provide either `--cluster-id` or `--cluster-name`.
+
 ```bash
 dbx execute <workflow-name> \
     --cluster-name="<some-cluster-name>"
@@ -79,15 +86,18 @@ To start working with your notebooks from a Repos, do the following steps:
 
 1. Add your git provider token to your user settings in Databricks
 2. Add your repository to Repos. This could be done via UI, or via CLI command below:
+
 ```bash
 databricks repos create --url <your repo URL> --provider <your-provider>
 ```
+
 This command will create your personal repository under `/Repos/<username>/ml_cicd_demo`.
 3. Use `git_source` in your job definition as described [here](https://dbx.readthedocs.io/en/latest/guides/python/devops/notebook/?h=git_source#using-git_source-to-specify-the-remote-source)
 
 ## CI/CD pipeline settings
 
 Please set the following secrets or environment variables for your CI provider:
+
 - `DATABRICKS_HOST`
 - `DATABRICKS_TOKEN`
 
@@ -95,7 +105,8 @@ Please set the following secrets or environment variables for your CI provider:
 
 - To trigger the CI pipeline, simply push your code to the repository. If CI provider is correctly set, it shall trigger the general testing pipeline
 - To trigger the release pipeline, get the current version from the `ml_cicd_demo/__init__.py` file and tag the current code version:
-```
+
+```bash
 git tag -a v<your-project-version> -m "Release tag for version <your-project-version>"
 git push origin --tags
 ```
